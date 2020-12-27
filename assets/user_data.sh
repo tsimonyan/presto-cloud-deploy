@@ -219,11 +219,10 @@ fi
 
 
 %{ for script in additional_bootstrap_scripts ~}
-%{ if script.type == "s3" ~}
-aws s3 cp ${script.script_url} /tmp/${script.script_name}
-%{ else ~}
-curl ${script.script_url} -o /tmp/${script.script_name}
-%{ endif ~}
-
-sh -c "/tmp/${script.script_name} %{ for param in script.params ~} ${param}%{ endfor ~}"
-
+  %{ if script.type == "s3" ~}
+    aws s3 cp ${script.script_url} /tmp/${script.script_name}
+  %{ else ~}
+    curl ${script.script_url} -o /tmp/${script.script_name}
+  %{ endif ~}
+  sh -c "/tmp/${script.script_name} %{ for param in script.params ~} ${param}%{ endfor ~}"
+%{ endfor ~}
